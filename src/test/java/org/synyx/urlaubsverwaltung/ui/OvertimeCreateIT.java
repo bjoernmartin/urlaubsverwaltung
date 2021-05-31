@@ -11,6 +11,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.MessageSource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -31,12 +32,14 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 
 import static java.math.BigDecimal.TEN;
 import static java.math.BigDecimal.ZERO;
 import static java.time.Month.DECEMBER;
 import static java.time.Month.FEBRUARY;
 import static java.time.Month.JANUARY;
+import static java.util.Locale.ENGLISH;
 import static java.util.Optional.empty;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.openqa.selenium.support.ui.ExpectedConditions.not;
@@ -84,6 +87,8 @@ class OvertimeCreateIT {
     private AccountInteractionService accountInteractionService;
     @Autowired
     private WorkingTimeService workingTimeService;
+    @Autowired
+    private MessageSource messageSource;
 
     @Test
     void ensureOvertimeCreation() {
@@ -92,7 +97,7 @@ class OvertimeCreateIT {
         final RemoteWebDriver webDriver = browserContainer.getWebDriver();
         final WebDriverWait wait = new WebDriverWait(webDriver, 20);
 
-        final LoginPage loginPage = new LoginPage(webDriver);
+        final LoginPage loginPage = new LoginPage(webDriver, messageSource, ENGLISH);
         final NavigationPage navigationPage = new NavigationPage(webDriver);
         final SettingsPage settingsPage = new SettingsPage(webDriver);
         final OvertimePage overtimePage = new OvertimePage(webDriver);
@@ -135,7 +140,7 @@ class OvertimeCreateIT {
         // overtime created info vanishes sometime
         wait.until(not(isTrue(overtimeDetailPage::showsOvertimeCreatedInfo)));
 
-        assertThat(overtimeDetailPage.isVisibleForPerson("Donald Bradley")).isTrue();
+        assertThat(overtimeDetailPage.isVisibleForPerson(person.getNiceName())).isTrue();
         assertThat(overtimeDetailPage.showsHours(2)).isTrue();
         assertThat(overtimeDetailPage.showsMinutes(30)).isTrue();
 
