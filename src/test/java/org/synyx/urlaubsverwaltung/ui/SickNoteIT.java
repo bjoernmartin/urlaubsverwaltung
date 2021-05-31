@@ -32,7 +32,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Locale;
 
 import static java.math.BigDecimal.TEN;
 import static java.math.BigDecimal.ZERO;
@@ -61,8 +60,8 @@ import static org.testcontainers.containers.MariaDBContainer.NAME;
 
 @Testcontainers
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-@ContextConfiguration(initializers = SickNoteCreateIT.Initializer.class)
-class SickNoteCreateIT {
+@ContextConfiguration(initializers = SickNoteIT.Initializer.class)
+class SickNoteIT {
 
     @LocalServerPort
     private int port;
