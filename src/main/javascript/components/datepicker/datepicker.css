@@ -25,9 +25,14 @@ duet-date-picker.error {
   height: 100%;
 }
 
-.duet-date__day.datepicker-day {
+.duet-date__day.datepicker-day,
+.duet-date__day.datepicker-day:not(.is-month) {
   /* override padding of .datepicker-day */
   padding: 0;
+  /* override duet stuff */
+  opacity: 1;
+  background: linear-gradient(90deg, var(--background-color-left) 50%, var(--background-color-right) 50%);
+  color: var(--font-color);
 }
 
 .duet-date__table-header {
